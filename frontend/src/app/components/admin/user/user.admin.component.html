@@ -1,0 +1,74 @@
+<div class="container">
+  <h1>Quản lý tài khoản</h1>
+  <!--Đoạn này có 1 ô searchbox bên trái, 1 combobox bên phải  -->
+  <div class="row mb-3">
+    <div class="col-md-8">
+      <input type="text" class="form-control search-input" placeholder="Tìm tài khoản" [(ngModel)]="keyword">
+    </div>
+    <div class="col-md-4">
+      <button class="btn btn-primary" (click)="searchUsers()"><i class="fa fa-search"></i> Tìm kiếm</button>
+    </div>
+  </div>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Full Name</th>
+        <th>Phone</th>
+        <th>Address</th>
+        <th>State</th>
+        <th>Role</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let user of users;">
+            <td>{{ user.id }}</td>
+            <td>{{ user.fullname }}</td>
+            <td>{{ user.phone_number }}</td>
+            <td>{{ user.address }}</td>
+            <td>{{ user.is_active ? 'Active' : 'Inactive' }}</td>
+            <td>{{ user.role.name }}</td>
+            <td>
+                <button class="btn" [ngClass]="{
+                        'btn-danger': user.is_active,
+                        'btn-success': !user.is_active
+                      }" >
+                    {{ user.is_active ? 'Block User' : 'Unblock User' }}
+                </button>
+                <button class="btn btn-primary ms-2" >
+                    Reset Password
+                </button>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+  <div class="d-flex justify-content-center">
+    <nav aria-label="Page navigation">
+      <ul class="pagination">
+        <li class="page-item" *ngIf="currentPage > 0">
+          <a class="page-link" (click)="onPageChange(0)">Đầu</a>
+        </li>
+        <li class="page-item" *ngIf="currentPage > 0">
+          <a class="page-link" (click)="onPageChange(currentPage - 1)">
+            <i class="fa fa-chevron-left"></i>
+          </a>
+        </li>
+        <ng-container *ngFor="let page of visiblePages">
+          <li class="page-item" [ngClass]="{'active': page === currentPage + 1}">
+            <a class="page-link" (click)="onPageChange(page - 1)">{{ page }}</a>
+          </li>
+        </ng-container>
+        <li class="page-item" *ngIf="currentPage < totalPages - 1">
+          <a class="page-link" (click)="onPageChange(currentPage + 1)">
+            <i class="fa fa-chevron-right"></i>
+          </a>
+        </li>
+        <li class="page-item" *ngIf="currentPage < totalPages - 1">
+          <a class="page-link" (click)="onPageChange(totalPages - 1)">Cuối</a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</div>
+

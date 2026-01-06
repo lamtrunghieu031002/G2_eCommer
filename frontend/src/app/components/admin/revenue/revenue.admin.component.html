@@ -1,0 +1,38 @@
+<div class="container mt-4">
+  <h3>Thống kê sản phẩm</h3>
+
+  <div class="row mb-3">
+    <div class="col-md-3">
+      <label>Từ ngày:</label>
+      <input type="date" class="form-control" [(ngModel)]="startDate" />
+    </div>
+    <div class="col-md-3">
+      <label>Đến ngày:</label>
+      <input type="date" class="form-control" [(ngModel)]="endDate" />
+    </div>
+    <div class="col-md-3 d-flex align-items-end">
+      <button class="btn btn-primary" (click)="fetchProductStats(true)">Thống kê</button>
+    </div>
+  </div>
+
+  <table class="table table-bordered table-hover">
+    <thead class="table-light">
+      <tr>
+        <th>Tên sản phẩm</th>
+        <th>Số lượng đã bán</th>
+        <th>Doanh thu (VNĐ)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of productStats">
+        <td>{{ item.productName }}</td>
+        <td>{{ item.quantitySold }}</td>
+        <td>{{ item.revenue | currency:'VND' }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="text-center mt-3 " *ngIf="page < totalPages -1">
+    <button class="btn add-more" (click)="loadMore()">Xem thêm</button>
+  </div>
+</div>

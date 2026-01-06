@@ -1,0 +1,88 @@
+<div class="container-fluid">
+    <header class="header bg-success text-white d-flex justify-content-between" style="background-color: #212529;">
+      <!-- <a class="navbar-brand" href="#">
+        <img src="/favicon.ico" alt="Logo" width="50" height="50">
+      </a>
+        <h2>Tengen Shop</h2>
+
+      <button class="btn" (click)="logout()" style="background-color: white ; color: black ; font-weight: bold;">Đăng xuất</button> -->
+      <nav class="navbar navbar-expand-lg navbar-light  shadow">
+        
+          <a class="navbar-brand d-flex align-items-center" routerLink="/">
+            <img src="/favicon.ico" alt="Logo" class="logo">
+            <span class="ms-2 fw-bold">Tengen Shop</span>
+          </a>
+      
+          <button class="btn btn-outline-light ms-auto" (click)="logout()">
+            <i class="bi bi-box-arrow-right"></i> Đăng xuất
+          </button>
+ 
+      </nav>
+    </header>
+    <div class="row">
+      <nav id="sidebar" class="col-md-2 col-lg-2 d-md-block bg-light sidebar">
+        <div class="position-sticky">
+          <ul class="nav flex-column">
+            <li class="nav-item">
+              <a class="nav-link" 
+                (click)="showAdminComponent('orders')"
+                routerLink="/admin/orders"
+                routerLinkActive="active">
+                <i class="fas fa-box"></i> Đơn hàng
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" 
+                (click)="showAdminComponent('categories')"
+                  routerLink="/admin/categories"
+                  routerLinkActive="active">
+                <i class="fas fa-tags"></i> Phân loại
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link"
+                (click)="showAdminComponent('products')"
+                routerLink="/admin/products"
+                routerLinkActive="active">
+                <i class="fas fa-laptop-code"></i> Sản phẩm
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link"
+                (click)="showAdminComponent('coupons')"
+                routerLink="/admin/coupons"
+                routerLinkActive="active">
+                <i class="fas fa-ticket-alt"></i> Mã giảm giá
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link"
+                (click)="showAdminComponent('users')"
+                routerLink="/admin/users"
+                routerLinkActive="active">
+                <i class="fa-solid fa-user"></i> Tài khoản
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" 
+                (click)="showAdminComponent('revenues')"
+                routerLink="/admin/revenues"
+                routerLinkActive="active">
+                <i class="fa-solid fa-chart-simple"></i> Thống kê
+              </a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+      <div class="col-md-10 col-lg-10 overflow-auto">
+        <!--
+        <ng-container [ngSwitch]="adminComponent">
+          <app-order-admin *ngSwitchCase="'orders'"></app-order-admin>
+          <app-product-admin *ngSwitchCase="'products'"></app-product-admin>
+          <app-category-admin *ngSwitchCase="'categories'"></app-category-admin>                    
+        </ng-container>
+        -->
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+  </div>
