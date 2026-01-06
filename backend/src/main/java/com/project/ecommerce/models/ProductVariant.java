@@ -17,10 +17,10 @@ public class ProductVariant {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "variant")
+    @Column(name = "name")
     private String variant;
 
-    @Column(name = "stock")
+    @Column(name = "quantity")
     private int stock;
 
     @ManyToOne

@@ -23,6 +23,7 @@ import {
 } from '@angular/common/http';
 import { OrderDetailComponent } from './components/detail-order/order.detail.component';
 import { ChangePasswordComponent } from './components/change_password/change.password.component';
+import { ReviewComponent } from './components/review/review.component';
 
 @NgModule({
   declarations: [    
@@ -35,9 +36,10 @@ import { ChangePasswordComponent } from './components/change_password/change.pas
     LoginComponent, 
     RegisterComponent, 
     UserProfileComponent,
-    AppComponent,  
-    OrderDetailComponent, 
-    ChangePasswordComponent 
+    AppComponent,
+    OrderDetailComponent,
+    ChangePasswordComponent,
+    ReviewComponent 
     //admin    
     //AdminComponent,
     //OrderAdminComponent,

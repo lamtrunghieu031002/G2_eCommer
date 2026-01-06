@@ -16,3 +16,4 @@ public class CouponListResponse {
     private int totalPages;
     private long totalElements;
 }
+

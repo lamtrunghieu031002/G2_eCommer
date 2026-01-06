@@ -29,3 +29,4 @@ public interface ICouponService {
 
     boolean validateCoupon(String code, Double orderAmount);
 }
+

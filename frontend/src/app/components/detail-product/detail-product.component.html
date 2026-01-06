@@ -84,5 +84,9 @@
   </div>
 </div>
 
+<!-- Product Reviews -->
+<div class="container" *ngIf="product">
+  <app-review [productId]="product.id"></app-review>
+</div>
 
 <app-footer></app-footer>

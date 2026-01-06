@@ -66,6 +66,10 @@ public class JwtTokenUtils {
     public String extractPhoneNumber(String token) {
         return extractClaim(token, Claims::getSubject);
     }
+
+    public Long extractUserId(String token) {
+        return extractClaim(token, claims -> claims.get("userId", Long.class));
+    }
     public boolean validateToken(String token, UserDetails userDetails) {
         String phoneNumber = extractPhoneNumber(token);
         return (phoneNumber.equals(userDetails.getUsername()))
