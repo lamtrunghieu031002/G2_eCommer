@@ -1,0 +1,192 @@
+<div class="review-section">
+  <div class="review-header">
+    <h3 class="review-title">
+      <i class="fas fa-star"></i>
+      Đánh giá sản phẩm
+    </h3>
+
+    <!-- Review Stats -->
+    <div class="review-stats" *ngIf="reviewStats">
+      <div class="stats-summary">
+        <div class="average-rating">
+          <div class="rating-number">{{ reviewStats.averageRating | number:'1.1-1' }}</div>
+          <div class="rating-stars">
+            <span *ngFor="let star of getStarArray(reviewStats.averageRating)"
+                  class="star filled">★</span>
+            <span *ngIf="reviewStats.averageRating % 1 >= 0.5" class="star half">★</span>
+            <span *ngFor="let star of getEmptyStarArray(reviewStats.averageRating)"
+                  class="star empty">★</span>
+          </div>
+          <div class="review-count">{{ reviewStats.reviewCount }} đánh giá</div>
+        </div>
+      </div>
+
+      <div class="rating-breakdown">
+        <div class="rating-bar" *ngFor="let rating of [5,4,3,2,1]">
+          <span class="rating-label">{{ rating }} sao</span>
+          <div class="progress-bar">
+            <div class="progress-fill" [style.width.%]="getRatingPercentage(rating)"></div>
+          </div>
+          <span class="rating-count">
+            {{ getRatingCount(rating) }}
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Write Review Button -->
+  <div class="review-actions">
+    <button type="button"
+            class="btn btn-primary write-review-btn"
+            (click)="toggleReviewForm()"
+            [disabled]="hasUserReviewed && !isEditing">
+      <i class="fas fa-edit"></i>
+      {{ getButtonText() }}
+    </button>
+  </div>
+
+  <!-- Review Form -->
+  <div class="review-form" *ngIf="showReviewForm">
+    <div class="form-container">
+      <h4>{{ getFormTitle() }}</h4>
+
+      <form #reviewForm="ngForm" (ngSubmit)="isEditing ? submitEditReview() : submitReview()">
+        <!-- Rating Selection -->
+        <div class="form-group">
+          <label class="form-label">Đánh giá của bạn <span class="text-danger">*</span></label>
+          <div class="rating-input">
+            <div class="star-rating">
+              <div *ngFor="let star of stars">
+                <input type="radio"
+                       [id]="'star-' + star"
+                       [name]="isEditing ? 'edit-rating' : 'new-rating'"
+                       [value]="star"
+                       [(ngModel)]="isEditing ? editReview.rating : newReview.rating"
+                       required>
+                <label [for]="'star-' + star" class="star-label">★</label>
+              </div>
+            </div>
+            <span class="rating-text">
+              {{ getCurrentRating() || 0 }} sao
+            </span>
+          </div>
+        </div>
+
+        <!-- Comment -->
+        <div class="form-group">
+          <label class="form-label">Bình luận của bạn</label>
+          <textarea class="form-control"
+                    [name]="getCommentInputName()"
+                    [(ngModel)]="isEditing ? editReview.comment : newReview.comment"
+                    rows="4"
+                    placeholder="Hãy chia sẻ trải nghiệm của bạn về sản phẩm này..."
+                    maxlength="1000"></textarea>
+          <small class="form-text text-muted">
+            {{ getCurrentComment().length }}/1000 ký tự
+          </small>
+        </div>
+
+        <!-- Form Actions -->
+        <div class="form-actions">
+          <button type="button"
+                  class="btn btn-secondary"
+                  (click)="isEditing ? cancelEdit() : toggleReviewForm()"
+                  [disabled]="isSubmitting">
+            <i class="fas fa-times"></i> Hủy
+          </button>
+          <button type="submit"
+                  class="btn btn-primary"
+                  [disabled]="isSubmitting || !getCurrentRating()">>
+            <i class="fas fa-paper-plane"></i>
+            {{ getSubmitButtonText() }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Reviews List -->
+  <div class="reviews-list">
+    <div class="reviews-header">
+      <h4>Tất cả đánh giá ({{ totalElements }})</h4>
+    </div>
+
+    <!-- Loading -->
+    <div class="loading" *ngIf="isLoading">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+      <span>Đang tải đánh giá...</span>
+    </div>
+
+    <!-- No Reviews -->
+    <div class="no-reviews" *ngIf="!isLoading && reviews.length === 0">
+      <i class="fas fa-comments fa-3x text-muted"></i>
+      <h5>Chưa có đánh giá nào</h5>
+      <p>Hãy là người đầu tiên đánh giá sản phẩm này!</p>
+    </div>
+
+    <!-- Reviews -->
+    <div class="review-item" *ngFor="let review of reviews; trackBy: trackByReviewId">
+      <div class="review-header">
+        <div class="user-info">
+          <div class="user-avatar">
+            <i class="fas fa-user-circle"></i>
+          </div>
+          <div class="user-details">
+            <div class="user-name">{{ review.userName }}</div>
+            <div class="review-date">{{ formatDate(review.createdAt) }}</div>
+          </div>
+        </div>
+        <div class="review-rating">
+          <div class="stars">
+            <span *ngFor="let star of getStarArray(review.rating)" class="star filled">★</span>
+            <span *ngFor="let star of getEmptyStarArray(review.rating)" class="star empty">★</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="review-content">
+        <p class="review-comment" *ngIf="review.comment">{{ review.comment }}</p>
+        <p class="no-comment" *ngIf="!review.comment">
+          <em>Không có bình luận</em>
+        </p>
+      </div>
+
+      <div class="review-actions" *ngIf="canUserModifyReview(review)">
+        <button type="button"
+                class="btn btn-sm btn-outline-primary"
+                (click)="startEditReview(review)">
+          <i class="fas fa-edit"></i> Sửa
+        </button>
+        <button type="button"
+                class="btn btn-sm btn-outline-danger"
+                (click)="deleteReview(review.id)">
+          <i class="fas fa-trash"></i> Xóa
+        </button>
+      </div>
+    </div>
+
+    <!-- Pagination -->
+    <div class="pagination" *ngIf="totalPages > 1">
+      <button type="button"
+              class="btn btn-outline-primary"
+              (click)="onPageChange(currentPage - 1)"
+              [disabled]="currentPage === 0">
+        <i class="fas fa-chevron-left"></i> Trước
+      </button>
+
+      <span class="page-info">
+        Trang {{ currentPage + 1 }} / {{ totalPages }}
+      </span>
+
+      <button type="button"
+              class="btn btn-outline-primary"
+              (click)="onPageChange(currentPage + 1)"
+              [disabled]="currentPage === totalPages - 1">
+        Sau <i class="fas fa-chevron-right"></i>
+      </button>
+    </div>
+  </div>
+</div>
