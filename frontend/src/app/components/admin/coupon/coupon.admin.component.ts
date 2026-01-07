@@ -69,7 +69,7 @@ export class CouponAdminComponent implements OnInit {
     const confirmation = window.confirm('Bạn có chắc chắn muốn xóa coupon này?');
     if (confirmation) {
       this.couponService.deleteCoupon(coupon.id).subscribe({
-        next: (response: string) => {
+        next: () => {
           alert('Xóa phiếu giảm giá thành công!');
           this.getCoupons();
         },
