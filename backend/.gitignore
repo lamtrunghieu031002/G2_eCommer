@@ -35,5 +35,5 @@ build/
 ### ✅ CUSTOM - Không push file nhạy cảm ###
 src/main/resources/application.yml
 src/main/resources/application-*.yml
-uploads/
+
 *.log
