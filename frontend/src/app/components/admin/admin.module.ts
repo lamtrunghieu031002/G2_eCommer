@@ -13,6 +13,10 @@ import { CategoryAdminComponent } from './category/category.admin.component';
 import { InsertCategoryAdminComponent } from './category/insert/insert.category.admin.component';
 import { UpdateCategoryAdminComponent } from './category/update/update.category.admin.component';
 
+import { CouponAdminComponent } from './coupon/coupon.admin.component';
+import { InsertCouponAdminComponent } from './coupon/insert/insert.coupon.admin.component';
+import { UpdateCouponAdminComponent } from './coupon/update/update.coupon.admin.component';
+
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { UserAdminComponent } from './user/user.admin.component';
@@ -32,6 +36,11 @@ import { RevenueAdminComponent } from './revenue/revenue.admin.component';
 
     InsertCategoryAdminComponent,
     UpdateCategoryAdminComponent,
+
+    CouponAdminComponent,
+    InsertCouponAdminComponent,
+    UpdateCouponAdminComponent,
+
     UserAdminComponent,
     RevenueAdminComponent
   ],

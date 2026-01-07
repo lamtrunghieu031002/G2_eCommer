@@ -52,4 +52,9 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             "GROUP BY p.name ")
     Page<Object[]> getProductStat(@Param("start") LocalDate start,
                                              @Param("end") LocalDate end, Pageable pageable);
+
+    // Spring Data JPA query methods
+    Optional<Product> findByName(String name);
+    List<Product> findByNameContainingIgnoreCase(String name);
+    List<Product> findByPriceBetween(Float minPrice, Float maxPrice);
 }

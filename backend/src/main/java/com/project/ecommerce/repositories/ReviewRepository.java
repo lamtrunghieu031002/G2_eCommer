@@ -36,5 +36,3 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
     List<Object[]> getRatingDistributionByProductId(@Param("productId") Long productId);
 }
 
-
-

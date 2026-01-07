@@ -14,4 +14,7 @@ public interface VariantRepository extends JpaRepository<ProductVariant, Long> {
     List<ProductVariant> getProductVariantByProductId(Long productId);
     @Query("SELECT p FROM ProductVariant p WHERE p.id IN :productIds")
     List<ProductVariant> findVariantsByIds(@Param("productIds") List<Long> productIds);
+
+    // Spring Data JPA query method
+    List<ProductVariant> findByProductId(Long productId);
 }

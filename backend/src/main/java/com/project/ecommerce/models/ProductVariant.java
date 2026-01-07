@@ -28,4 +28,17 @@ public class ProductVariant {
     @JsonIgnore
     private Product product;
 
+    // Custom getters for compatibility with chatbot code
+    public String getName() {
+        return this.variant;
+    }
+
+    public int getQuantity() {
+        return this.stock;
+    }
+
+    public Float getPrice() {
+        return this.product != null ? this.product.getPrice() : null;
+    }
+
 }

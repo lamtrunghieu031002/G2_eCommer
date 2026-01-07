@@ -12,6 +12,9 @@ import { InsertCategoryAdminComponent } from "./category/insert/insert.category.
 import { UpdateCategoryAdminComponent } from "./category/update/update.category.admin.component";
 import { UserAdminComponent } from "./user/user.admin.component";
 import { RevenueAdminComponent } from "./revenue/revenue.admin.component";
+import { CouponAdminComponent } from "./coupon/coupon.admin.component";
+import { InsertCouponAdminComponent } from "./coupon/insert/insert.coupon.admin.component";
+import { UpdateCouponAdminComponent } from "./coupon/update/update.coupon.admin.component";
 
 const routes: Routes = [
     {
@@ -51,7 +54,7 @@ const routes: Routes = [
                 path: 'products/insert',
                 component: InsertProductAdminComponent
             },
-            //categories            
+            //categories
             {
                 path: 'categories/update/:id',
                 component: UpdateCategoryAdminComponent
@@ -59,6 +62,19 @@ const routes: Routes = [
             {
                 path: 'categories/insert',
                 component: InsertCategoryAdminComponent
+            },
+            //coupons
+            {
+                path: 'coupons',
+                component: CouponAdminComponent
+            },
+            {
+                path: 'coupons/insert',
+                component: InsertCouponAdminComponent
+            },
+            {
+                path: 'coupons/update/:id',
+                component: UpdateCouponAdminComponent
             },
         ]
     }
