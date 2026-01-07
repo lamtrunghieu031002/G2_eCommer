@@ -22,3 +22,5 @@ public interface IReviewService {
     List<Object[]> getRatingDistributionByProductId(Long productId);
 }
 
+
+
