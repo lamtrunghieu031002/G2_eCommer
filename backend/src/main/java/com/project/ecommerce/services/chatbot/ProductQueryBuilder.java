@@ -103,7 +103,7 @@ public class ProductQueryBuilder {
         
         // 1. Thử EXACT MATCH với product name
         if (intent.getProductName() != null) {
-            Optional<Product> exactMatch = productRepository.findByExactName(intent.getProductName());
+            Optional<Product> exactMatch = productRepository.findByName(intent.getProductName());
             if (exactMatch.isPresent()) {
                 System.out.println("✓ Exact match found: " + exactMatch.get().getName());
                 products.add(exactMatch.get());

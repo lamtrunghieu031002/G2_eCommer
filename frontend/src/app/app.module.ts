@@ -23,6 +23,7 @@ import { RegisterComponent } from './components/register/register.component';
 import { UserProfileComponent } from './components/user-profile/user.profile.component';
 import { OrderDetailComponent } from './components/detail-order/order.detail.component';
 import { ChangePasswordComponent } from './components/change_password/change.password.component';
+import { ReviewComponent } from './components/review/review.component';
 
 // Chatbot Components
 import { ChatbotButtonComponent } from './components/chatbot-button/chatbot-button.component';
@@ -50,7 +51,17 @@ import { TokenInterceptor } from './interceptors/token.interceptor';
     ChangePasswordComponent,
     // CHATBOT COMPONENTS
     ChatbotButtonComponent,
-    ChatbotWindowComponent
+    ChatbotWindowComponent,
+    AppComponent,
+    OrderDetailComponent,
+    ChangePasswordComponent,
+    ReviewComponent 
+    //admin    
+    //AdminComponent,
+    //OrderAdminComponent,
+    //ProductAdminComponent,
+    //CategoryAdminComponent,
+    //DetailOrderAdminComponent,
   ],
   imports: [
     BrowserModule,

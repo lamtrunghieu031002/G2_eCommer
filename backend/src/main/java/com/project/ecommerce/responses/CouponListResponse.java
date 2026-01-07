@@ -17,5 +17,3 @@ public class CouponListResponse {
     private long totalElements;
 }
 
-
-

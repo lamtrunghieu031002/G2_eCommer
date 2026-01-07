@@ -24,5 +24,3 @@ public class InsertReviewDTO {
     private String comment;
 }
 
-
-
