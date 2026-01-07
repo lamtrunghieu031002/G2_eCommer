@@ -22,7 +22,7 @@ export class AdminGuard {
     const isUserIdValid = this.tokenService.getUserId() > 0;
     this.userResponse = this.userService.getUserResponseFromLocalStorage();
     const role = this.tokenService.getRoleFromToken();
-    const isAdmin = role === 'ADMIN'; // Match database role name
+    const isAdmin = role === 'ADMIN'; 
     if (!isTokenExpired && isUserIdValid && isAdmin ) {
       return true;
     } else {
