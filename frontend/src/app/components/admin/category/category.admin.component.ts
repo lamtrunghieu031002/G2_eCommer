@@ -36,7 +36,7 @@ export class CategoryAdminComponent implements OnInit {
       });
     }
     insertCategory() {
-      debugger
+      
       // Điều hướng đến trang detail-category với categoryId là tham số
       this.router.navigate(['/admin/categories/insert']);
     } 
@@ -49,7 +49,7 @@ export class CategoryAdminComponent implements OnInit {
       const confirmation = window
       .confirm('Are you sure you want to delete this category?');
       if (confirmation) {
-        debugger
+        
         this.categoryService.deleteCategory(category.id).subscribe({
           next: (response: string) => {
 

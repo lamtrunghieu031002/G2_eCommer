@@ -86,8 +86,15 @@ public class JwtTokenFilter extends OncePerRequestFilter{
 
                 Pair.of(String.format("%s/users/register", apiPrefix), "POST"),
                 Pair.of(String.format("%s/users/login", apiPrefix), "POST"),
-                Pair.of(String.format("%s/users/refreshToken", apiPrefix), "POST")
+                Pair.of(String.format("%s/users/refreshToken", apiPrefix), "POST"),
 
+                // ✅ CHATBOT - CHO PHÉP CẢ CÓ TOKEN VÀ KHÔNG CÓ TOKEN
+                Pair.of(String.format("%s/chatbot/**", apiPrefix), "POST"),
+                Pair.of(String.format("%s/chatbot/**", apiPrefix), "GET"),
+
+                // ✅ REVIEWS - CHO PHÉP TRUY CẬP KHÔNG CẦN TOKEN
+                Pair.of(String.format("%s/reviews/**", apiPrefix), "GET"),
+                Pair.of(String.format("%s/reviews/**", apiPrefix), "POST")
         );
 
         String requestPath = request.getServletPath();
