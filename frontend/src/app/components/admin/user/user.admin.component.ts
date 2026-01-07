@@ -18,13 +18,16 @@ export class UserAdminComponent implements OnInit {
   totalPages: number = 0;
   visiblePages: number[] = [];
   keyword: string = "";
+  localStorage?: Storage;
 
   constructor(
     private userService: UserService,
     private router: Router,
-  ) {}
+  ) {
+
+  }
   ngOnInit(): void {
-    this.currentPage = Number(localStorage.getItem('currentUserAdminPage')) || 0;
+    this.currentPage = Number(this.localStorage?.getItem('currentUserAdminPage')) || 0;
     this.getUsers(this.keyword, this.currentPage, this.itemsPerPage);
   }
 
@@ -37,6 +40,7 @@ export class UserAdminComponent implements OnInit {
   getUsers(keyword: string, page: number, limit: number) {
     this.userService.getUsers({ keyword, page, limit }).subscribe({
       next: (apiResponse: ApiResponse) => {
+        
         const response = apiResponse.data
         this.users = response.users;
         this.totalPages = response.totalPages;
@@ -44,6 +48,7 @@ export class UserAdminComponent implements OnInit {
       },
       complete: () => {
         // Handle complete event
+        
       },
       error: (error: any) => {
         // this.toastService.showToast({
@@ -73,17 +78,19 @@ export class UserAdminComponent implements OnInit {
 
   onPageChange(page: number) {
     this.currentPage = page < 0 ? 0 : page;
-    localStorage.setItem('currentUserAdminPage', String(this.currentPage));
+    this.localStorage?.setItem('currentUserAdminPage', String(this.currentPage));
     this.getUsers(this.keyword, this.currentPage, this.itemsPerPage);
   }
   // Hàm xử lý sự kiện khi thêm mới user
   // insertUser() {
+  //   
   //   // Điều hướng đến trang detail-user với userId là tham số
   //   this.router.navigate(['/admin/users/insert']);
   // } 
 
   // // Hàm xử lý sự kiện khi 1 user được bấm vào
   // updateUser(userId: number) {
+  //   
   //   // Điều hướng đến trang detail-user với userId là tham số
   //   this.router.navigate(['/admin/users/update', userId]);
   // }  

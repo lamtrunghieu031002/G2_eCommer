@@ -67,21 +67,26 @@ export class OrderComponent implements OnInit{
   }
   
   ngOnInit(): void {  
+    
     //this.cartService.clearCart();
     this.orderData.user_id = this.tokenService.getUserId();    
     // Lấy danh sách sản phẩm từ giỏ hàng
+    
     this.cart = this.cartService.getCart();
     const variantIds = Array.from(this.cart.keys()); // Chuyển danh sách ID từ Map giỏ hàng    
 
     // Gọi service để lấy thông tin sản phẩm dựa trên danh sách ID
+        
     if(variantIds.length === 0) {
       return;
     }  
     this.variantService.getVariantsByIds(variantIds).subscribe({
       next: (apiResponse: ApiResponse) => {            
+        
         // Lấy thông tin sản phẩm và số lượng từ danh sách sản phẩm và giỏ hàng   
         const variants = apiResponse.data;     
         this.cartItems = variantIds.map((variantId) => {
+          
           const variant = variants.find((v: { id: number; }) => v.id === variantId)
           if (variant) {
             variant.thumbnail = `${environment.apiBaseUrl}/products/images/${variant.thumbnail}`;
@@ -94,14 +99,17 @@ export class OrderComponent implements OnInit{
 
       },
       complete: () => {
+        ;
         this.calculateTotal()
       },
       error: (error: any) => {
+        ;
         console.error('Error fetching detail:', error);
       }
     });          
   }
   placeOrder() {
+    
     if (this.orderForm.valid) {
       this.orderData = {
         ...this.orderData,
@@ -116,6 +124,7 @@ export class OrderComponent implements OnInit{
     // Kiểm tra: Nếu payment_method = 'vnpay' => Gọi createPaymentUrl, 
     // ngược lại => placeOrder
     if (this.orderData.payment_method === 'vnpay') {
+      
       const amount = this.orderData.total_money || 0;
     
       // Bước 1: Gọi API tạo link thanh toán
@@ -136,9 +145,11 @@ export class OrderComponent implements OnInit{
             }).subscribe({
               next: (apiResponse: ApiResponse) => {
             // Bước 4: Nếu đặt hàng thành công, điều hướng sang trang thanh toán VNPAY
+                
                 window.location.href = paymentUrl;
               },
               error: (err: HttpErrorResponse) => {
+                
                 this.toastService.showToast({
                   error: err,
                   defaultMsg: 'Lỗi trong quá trình đặt hàng',
@@ -156,9 +167,11 @@ export class OrderComponent implements OnInit{
           }
         });
     } else {
+      
       // Chọn COD => Gọi this.orderService.placeOrder
       this.orderService.placeOrder(this.orderData).subscribe({
         next: (apiResponse: ApiResponse) => {
+          
           this.toastService.showToast({
             error: null,
             defaultMsg: 'Đặt hàng thành công!',
@@ -169,6 +182,7 @@ export class OrderComponent implements OnInit{
           this.router.navigate(['/']);
         },
         error: (err: HttpErrorResponse) => {
+          
           this.toastService.showToast({
             error: err,
             defaultMsg: 'Lỗi trong quá trình đặt hàng',

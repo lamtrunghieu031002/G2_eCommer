@@ -19,14 +19,16 @@ export class CartService {
       this.cart = new Map<number, number>();
     }
   }
-  private getCartKey():string {
-    const userResponseJSON = localStorage.getItem('user');
-    const userResponse = JSON.parse(userResponseJSON!);
+  private getCartKey():string {    
+    const userResponseJSON = localStorage.getItem('user'); 
+    const userResponse = JSON.parse(userResponseJSON!);  
+    
     return `cart:${userResponse?.id ?? ''}`;
 
   }
 
   addToCart(productId: number, quantity: number = 1): void {
+    
     if (this.cart.has(productId)) {
       // Nếu sản phẩm đã có trong giỏ hàng, tăng số lượng lên quantity
       this.cart.set(productId, this.cart.get(productId)! + quantity);
@@ -43,6 +45,7 @@ export class CartService {
   }
   // Lưu trữ giỏ hàng vào localStorage
   private saveCartToLocalStorage(): void {
+    
     localStorage.setItem(this.getCartKey(), JSON.stringify(Array.from(this.cart.entries())));
   }  
   setCart(cart : Map<number, number>) {

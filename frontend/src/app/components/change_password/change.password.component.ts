@@ -37,6 +37,7 @@ export class ChangePasswordComponent {
   
   
   changePassword() {
+    
     let userId = this.userService.getUserResponseFromLocalStorage()?.id;
     if (this.changePasswordForm.valid && userId ) {
       const requestDTO: ChangePasswordDTO = {
@@ -47,6 +48,7 @@ export class ChangePasswordComponent {
 
       this.userService.changePassword(userId, requestDTO).subscribe({
         next: (response: ApiResponse) => {
+          
           this.toastService.showToast({
             error: null,
             defaultMsg: "Đổi mật khẩu thành công, vui lòng đăng nhập lại!",

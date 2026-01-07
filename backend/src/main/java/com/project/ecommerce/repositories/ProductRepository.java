@@ -52,4 +52,22 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             "GROUP BY p.name ")
     Page<Object[]> getProductStat(@Param("start") LocalDate start,
                                              @Param("end") LocalDate end, Pageable pageable);
+    
+    // ===== METHODS MỚI CHO CHATBOT =====
+    
+    /**
+     * Tìm sản phẩm theo tên CHÍNH XÁC (exact match)
+     */
+    @Query("SELECT p FROM Product p WHERE LOWER(p.name) = LOWER(:name)")
+    Optional<Product> findByExactName(@Param("name") String name);
+    
+    /**
+     * Tìm sản phẩm theo tên có chứa keyword (case insensitive)
+     */
+    List<Product> findByNameContainingIgnoreCase(String keyword);
+    
+    /**
+     * Tìm sản phẩm theo khoảng giá
+     */
+    List<Product> findByPriceBetween(Float minPrice, Float maxPrice);
 }

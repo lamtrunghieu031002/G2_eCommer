@@ -40,9 +40,11 @@ export class HomeComponent implements OnInit {
     getCategories(page: number, limit: number) {
       this.categoryService.getCategories(page, limit).subscribe({
         next: (apiresponse: ApiResponse) => {
+          
           this.categories = apiresponse.data;
         },
         complete: () => {
+          
         },
         error: (error: any) => {
           console.error('Error fetching categories:', error);
@@ -53,12 +55,15 @@ export class HomeComponent implements OnInit {
     searchProducts() {
       this.currentPage = 0;
       this.itemsPerPage = 12;
+      
       this.getProducts(this.keyword, this.selectedCategoryId, this.currentPage, this.itemsPerPage);
     }
     
     getProducts(keyword: string, selectedCategoryId: number, page: number, limit: number) {
+      
       this.productService.getProducts(keyword, selectedCategoryId, page, limit).subscribe({
         next: (apiresponse: ApiResponse) => {
+          
           const response = apiresponse.data;
           response.products.forEach((product: Product) => {          
             product.url = `${environment.apiBaseUrl}/products/images/${product.thumbnail}`;
@@ -69,14 +74,17 @@ export class HomeComponent implements OnInit {
           this.visiblePages = this.generateVisiblePageArray(this.currentPage, this.totalPages);
         },
         complete: () => {
+          
         },
         error: (error: any) => {
+          
           console.error('Error fetching products:', error);
         }
       });    
     }
     
     onPageChange(page: number) {
+      
       this.currentPage = page < 0 ? 0 : page;
       localStorage.setItem('currentProductPage', String(this.currentPage)); 
       this.getProducts(this.keyword, this.selectedCategoryId, this.currentPage, this.itemsPerPage);
@@ -99,6 +107,7 @@ export class HomeComponent implements OnInit {
     
     // Hàm xử lý sự kiện khi sản phẩm được bấm vào
     onProductClick(productId: number) {
+      
       // Điều hướng đến trang detail-product với productId là tham số
       this.router.navigate(['/products', productId]);
     }

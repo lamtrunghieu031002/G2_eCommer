@@ -43,6 +43,7 @@ export class HeaderComponent implements OnInit{
   handleItemClick(index: number): void {
     //alert(`Clicked on "${index}"`);
     if(index === 0) {
+      
       this.router.navigate(['/user-profile']);                      
     } else if (index == 1) {
       this.router.navigate(['/orders/user']);
@@ -64,9 +65,11 @@ export class HeaderComponent implements OnInit{
   getCategories(page: number, limit: number) {
     this.categoryService.getCategories(page, limit).subscribe({
       next: (apiresponse: ApiResponse) => {
+        ;
         this.categories = apiresponse.data;
       },
       complete: () => {
+        ;
       },
       error: (error: any) => {
         console.error('Error fetching categories:', error);

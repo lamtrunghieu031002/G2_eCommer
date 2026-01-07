@@ -29,8 +29,10 @@ export class PaymentCallbackComponent implements OnInit {
 
   ngOnInit(): void {
     this.activatedRoute.queryParams.subscribe(params => {
+      
       const vnp_ResponseCode = params['vnp_ResponseCode']; // Mã phản hồi từ VNPay
       const orderId:number = Number(params['vnp_TxnRef']); // Mã đơn hàng (nếu bạn truyền vào khi tạo URL thanh toán)
+      
       if (vnp_ResponseCode === '00') {
         // Thanh toán thành công
         this.handlePaymentSuccess(orderId);
@@ -55,6 +57,7 @@ export class PaymentCallbackComponent implements OnInit {
         });
 
         setTimeout(() => {
+          
           this.cartService.clearCart();
           this.router.navigate(['/']);
         }, 3000);

@@ -22,6 +22,7 @@ export class RegisterComponent {
   showPassword: boolean = false;
 
   constructor(private router: Router, private userService: UserService){
+    
     this.phoneNumber = '';
     this.password = '';
     this.retypePassword = '';
@@ -34,6 +35,7 @@ export class RegisterComponent {
 
   }
   onPhoneNumberChange(){
+    console.log(`Phone typed: ${this.phoneNumber}`)
     //how to validate ? phone must be at least 6 characters
   }
   register() {
@@ -45,7 +47,7 @@ export class RegisterComponent {
                     `isAccepted: ${this.isAccepted}`+
                     `dateOfBirth: ${this.dateOfBirth}`;
     //alert(message);
-
+    
     
     const registerDTO:RegisterDTO = {
         "fullname": this.fullName,
@@ -58,6 +60,7 @@ export class RegisterComponent {
     }
     this.userService.register(registerDTO).subscribe({
         next: (apiResponse: ApiResponse) => {
+          
           const confirmation = window
             .confirm('Đăng ký thành công, mời bạn đăng nhập. Bấm "OK" để chuyển đến trang đăng nhập.');
           if (confirmation) {
@@ -65,10 +68,11 @@ export class RegisterComponent {
           }
         },
         complete: () => {
-
+          
         },
-        error: (error: any) => {
-          alert(error?.error?.message ?? '')
+        error: (error: any) => {        
+            
+          alert(error?.error?.message ?? '')          
         }
     })   
   }

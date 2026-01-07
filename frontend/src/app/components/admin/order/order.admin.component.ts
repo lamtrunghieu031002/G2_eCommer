@@ -28,6 +28,7 @@ export class OrderAdminComponent implements OnInit{
 
   }
   ngOnInit(): void {
+    
     this.currentPage = 0;
     //this.currentPage = Number(localStorage.getItem('currentOrderAdminPage')) || 0; 
     this.getAllOrders(this.keyword, this.currentPage, this.itemsPerPage);
@@ -36,11 +37,14 @@ export class OrderAdminComponent implements OnInit{
     this.currentPage = 0;
     this.itemsPerPage = 10;
     //Mediocre Iron Wallet
+    
     this.getAllOrders(this.keyword.trim(), this.currentPage, this.itemsPerPage);
   }
   getAllOrders(keyword: string, page: number, limit: number) {
+    
     this.orderService.getAllOrders(keyword, page, limit).subscribe({
       next: (apiResponse: ApiResponse) => {
+                
         console.log(page);
         const response = apiResponse.data;
         this.orders = response.orders;
@@ -48,13 +52,16 @@ export class OrderAdminComponent implements OnInit{
         this.visiblePages = this.generateVisiblePageArray(this.currentPage, this.totalPages);
       },
       complete: () => {
+        ;
       },
       error: (error: any) => {
+        ;
         console.error('Error fetching products:', error);
       }
     });    
   }
   onPageChange(page: number) {
+    ;
     this.currentPage = page < 0 ? 0 : page;
     //localStorage.setItem('currentOrderAdminPage', String(this.currentPage));         
     this.getAllOrders(this.keyword, this.currentPage, this.itemsPerPage);
@@ -79,19 +86,24 @@ export class OrderAdminComponent implements OnInit{
     const confirmation = window
       .confirm('Are you sure you want to delete this order?');
     if (confirmation) {
+      
       this.orderService.deleteOrder(id).subscribe({
         next: (response: any) => {
+           
           location.reload();          
         },
         complete: () => {
+          ;          
         },
         error: (error: any) => {
+          ;
           console.error('Error fetching products:', error);
         }
       });    
     }
   }
   viewDetails(order:OrderResponse) {
+    
     this.router.navigate(['/admin/orders', order.id]);
   }
   

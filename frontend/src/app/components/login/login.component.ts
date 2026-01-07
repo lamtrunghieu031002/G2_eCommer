@@ -54,19 +54,24 @@ export class LoginComponent implements OnInit{
 
   ngOnInit() {
     // Gọi API lấy danh sách roles và lưu vào biến roles
+    
     this.roleService.getRoles().subscribe({      
       next: (roles: Role[]) => { // Sử dụng kiểu Role[]
+        
         this.roles = roles;
         //this.selectedRole = roles.length > 0 ? roles[0] : undefined;
       },
       complete: () => {
+        
       },  
       error: (error: any) => {
+        
         console.error('Error getting roles:', error);
       }
     });
   }
   createAccount() {
+    
     // Chuyển hướng người dùng đến trang đăng ký (hoặc trang tạo tài khoản)
     this.router.navigate(['/register']); 
   }
@@ -74,27 +79,37 @@ export class LoginComponent implements OnInit{
     const loginDTO: LoginDTO = {
       phone_number: this.phoneNumber,
       password: this.password,
-      //role_id: this.selectedRole?.id ?? 1
     };
+    
     this.userService.login(loginDTO).subscribe({
       next: (apiResponse: ApiResponse) => {
         const { token } = apiResponse.data;
-        if (this.rememberMe) {
+        
+        if (this.rememberMe) {          
           this.tokenService.setToken(token);
+          
           this.userService.getUserDetail(token).subscribe({
             next: (response: any) => {
               this.userResponse = {
                 ...response,
                 date_of_birth: new Date(response.date_of_birth),
-              };
+              };    
               this.userService.saveUserResponseToLocalStorage(this.userResponse);
-              console.log('User role:', this.userResponse?.role?.name); // Debug
-              if(this.userResponse?.role.name == 'ADMIN') {
-                this.router.navigate(['/admin']);
-              } else if(this.userResponse?.role.name == 'USER') {
-                this.router.navigate(['/']);
+              
+              // ✅ FIX: So sánh không phân biệt HOA/thường
+              const roleName = this.userResponse?.role.name?.toLowerCase();
+              
+              console.log('User role:', roleName); // Debug log
+              
+              if (roleName === 'admin') {
+                console.log('Redirecting to admin...');
+                this.router.navigate(['/admin']);    
+              } else if (roleName === 'user') {
+                console.log('Redirecting to home...');
+                this.router.navigate(['/']);                      
               } else {
-                console.log('Unknown role, redirecting to home');
+                // Fallback nếu role không khớp
+                console.warn('Unknown role:', roleName);
                 this.router.navigate(['/']);
               }
             },
@@ -102,18 +117,18 @@ export class LoginComponent implements OnInit{
               this.cartService.refreshCart();
             },
             error: (error: any) => {
-              console.error('Error getting user details:', error);
+              console.error('Error getting user detail:', error);
+              this.loginError = "Không thể lấy thông tin người dùng.";
             }
-          })
+          });
         }                        
       },
       complete: () => {
-;
+        console.log('Login request completed');
       },
       error: (error: any) => {
-;
+        console.error('Login error:', error);
         this.loginError = "Đăng nhập thất bại. Vui lòng thử lại.";
-        console.log(error);
       }
     });
   }

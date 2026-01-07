@@ -1,0 +1,166 @@
+<!-- ============================================ -->
+<!-- CHATBOT WINDOW - CỬA SỔ CHAT CHÍNH -->
+<!-- ============================================ -->
+
+<div class="chatbot-window" *ngIf="isOpen" [@slideInOut]>
+  
+  <!-- ============ HEADER ============ -->
+  <div class="chatbot-header">
+    <div class="header-content">
+      <div class="bot-avatar">
+        <i class="fa fa-robot"></i>
+      </div>
+      <div class="header-info">
+        <h3 class="bot-name">Trợ lý AI</h3>
+        <span class="bot-status" [class.online]="!isTyping">
+          <span class="status-dot"></span>
+          {{ isTyping ? 'Đang trả lời...' : 'Trực tuyến' }}
+        </span>
+      </div>
+    </div>
+    
+    <div class="header-actions">
+      <button 
+        class="action-btn" 
+        (click)="clearChat()"
+        title="Xóa lịch sử chat">
+        <i class="fa fa-trash"></i>
+      </button>
+      <button 
+        class="action-btn close-btn" 
+        (click)="closeChat()"
+        title="Đóng chat">
+        <i class="fa fa-times"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- ============ MESSAGES BODY ============ -->
+  <div class="chatbot-messages" #messagesContainer>
+    
+    <!-- Welcome Message -->
+    <div class="message bot-message" *ngIf="messages.length === 0">
+      <div class="message-avatar">
+        <i class="fa fa-robot"></i>
+      </div>
+      <div class="message-content">
+        <div class="message-bubble welcome-message">
+          <p>👋 Xin chào! Tôi là trợ lý mua sắm của bạn.</p>
+          <p>Hãy cho tôi biết bạn cần tìm gì nhé!</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Message List -->
+    <div 
+      *ngFor="let msg of messages; let i = index"
+      class="message"
+      [class.user-message]="msg.sender === 'USER'"
+      [class.bot-message]="msg.sender === 'BOT'"
+      [@fadeIn]>
+      
+      <!-- Bot Message -->
+      <ng-container *ngIf="msg.sender === 'BOT'">
+        <div class="message-avatar">
+          <i class="fa fa-robot"></i>
+        </div>
+        <div class="message-content">
+          <div class="message-bubble">
+            <p [innerHTML]="formatMessage(msg.message)"></p>
+            <span class="message-time">{{ formatTime(msg.createdAt) }}</span>
+          </div>
+          
+          <!-- Product Cards (nếu có) -->
+          <div class="product-suggestions" *ngIf="msg.products && msg.products.length > 0">
+            <div 
+              class="product-card" 
+              *ngFor="let product of msg.products"
+              (click)="viewProduct(product.id)">
+              <img 
+                [src]="getProductImage(product.thumbnail)" 
+                [alt]="product.name"
+                class="product-image"
+                (error)="onImageError($event)">
+              <div class="product-info">
+                <h4 class="product-name">{{ product.name }}</h4>
+                <p class="product-price">{{ formatPrice(product.price) }}</p>
+                <button class="btn-view-product">
+                  <i class="fa fa-eye"></i> Xem chi tiết
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+
+      <!-- User Message -->
+      <ng-container *ngIf="msg.sender === 'USER'">
+        <div class="message-content">
+          <div class="message-bubble">
+            <p>{{ msg.message }}</p>
+            <span class="message-time">{{ formatTime(msg.createdAt) }}</span>
+          </div>
+        </div>
+        <div class="message-avatar user-avatar">
+          <i class="fa fa-user"></i>
+        </div>
+      </ng-container>
+    </div>
+
+    <!-- Typing Indicator -->
+    <div class="message bot-message typing-indicator" *ngIf="isTyping" [@fadeIn]>
+      <div class="message-avatar">
+        <i class="fa fa-robot"></i>
+      </div>
+      <div class="message-content">
+        <div class="message-bubble typing-bubble">
+          <div class="typing-dots">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ INPUT FOOTER ============ -->
+  <div class="chatbot-footer">
+    <!-- Quick Suggestions -->
+    <div class="quick-suggestions" *ngIf="messages.length === 0">
+      <button 
+        class="suggestion-btn"
+        *ngFor="let suggestion of quickSuggestions"
+        (click)="sendQuickMessage(suggestion)">
+        {{ suggestion }}
+      </button>
+    </div>
+
+    <!-- Input Form -->
+    <form class="input-form" (submit)="sendMessage($event)">
+      <input 
+        type="text"
+        class="message-input"
+        [(ngModel)]="userInput"
+        name="userInput"
+        placeholder="Nhập tin nhắn..."
+        [disabled]="isTyping"
+        (keydown.enter)="sendMessage($event)"
+        autocomplete="off">
+      
+      <button 
+        type="submit"
+        class="send-btn"
+        [disabled]="!userInput.trim() || isTyping"
+        [class.disabled]="!userInput.trim() || isTyping">
+        <i class="fa fa-paper-plane"></i>
+      </button>
+    </form>
+
+    <!-- Powered by -->
+    <div class="powered-by">
+      <small>Powered by <strong>Gemini AI</strong></small>
+    </div>
+  </div>
+
+</div>

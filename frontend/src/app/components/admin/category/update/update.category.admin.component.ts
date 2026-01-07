@@ -30,6 +30,7 @@ export class UpdateCategoryAdminComponent implements OnInit {
 
   ngOnInit(): void {    
     this.route.paramMap.subscribe(params => {
+      
       this.categoryId = Number(params.get('id'));
       this.getCategoryDetails();
     });
@@ -56,8 +57,10 @@ export class UpdateCategoryAdminComponent implements OnInit {
     };
     this.categoryService.updateCategory(this.updatedCategory.id, updateCategoryDTO).subscribe({
       next: (response: any) => {  
+        
       },
       complete: () => {
+        ;
         this.toastService.showToast({
           error: null,
           defaultMsg: 'Cập nhật danh mục thành công',
@@ -66,6 +69,7 @@ export class UpdateCategoryAdminComponent implements OnInit {
         this.router.navigate(['/admin/categories']);     
       },
       error: (error: any) => {
+        ;
         console.error('Error fetching categorys:', error);
       }
     });  

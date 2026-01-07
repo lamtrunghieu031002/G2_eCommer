@@ -53,9 +53,11 @@ export class UpdateProductAdminComponent implements OnInit {
   getCategories(page: number, limit: number) {
     this.categoryService.getCategories(page, limit).subscribe({
       next: (apiresponse: ApiResponse) => {
+        
         this.categories = apiresponse.data;
       },
       complete: () => {
+        ;
       },
       error: (error: any) => {
         console.error('Error fetching categories:', error);
@@ -98,6 +100,7 @@ export class UpdateProductAdminComponent implements OnInit {
     };
     this.productService.updateProduct(this.product.id, updateProductDTO).subscribe({
       next: (response: any) => {  
+                
       },
       complete: () => {
         this.toastService.showToast({
@@ -118,6 +121,7 @@ export class UpdateProductAdminComponent implements OnInit {
     });  
   }
   showImage(index: number): void {
+    
     if (this.product && this.product.product_images && 
         this.product.product_images.length > 0) {
       // Đảm bảo index nằm trong khoảng hợp lệ        
@@ -131,14 +135,17 @@ export class UpdateProductAdminComponent implements OnInit {
     }
   }
   thumbnailClick(index: number) {
+    
     // Gọi khi một thumbnail được bấm
     this.currentImageIndex = index; // Cập nhật currentImageIndex
   }  
   nextImage(): void {
+    
     this.showImage(this.currentImageIndex + 1);
   }
 
   previousImage(): void {
+    
     this.showImage(this.currentImageIndex - 1);
   }  
   onFileChange(event: any) {
@@ -153,6 +160,7 @@ export class UpdateProductAdminComponent implements OnInit {
     this.images = files;
     this.productService.uploadImages(this.productId, this.images).subscribe({
       next: (imageResponse) => {
+        
         // Handle the uploaded images response if needed              
         console.log('Images uploaded successfully:', imageResponse);
         this.images = [];       
@@ -192,6 +200,7 @@ export class UpdateProductAdminComponent implements OnInit {
 
     this.productVariantService.deleteVariants(variantId).subscribe({
       next:() => {
+         
          this.updatedProduct.product_variants = this.updatedProduct.product_variants.filter(v => v.id !== variantId);
       }, complete: () => {
         this.toastService.showToast({

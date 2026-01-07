@@ -52,6 +52,7 @@ export class ProductService {
     return this.http.get<Product[]>(`${this.apiBaseUrl}/products/by-ids`, { params });
   }
   deleteProduct(productId: number): Observable<any> {
+    
     return this.http.delete<string>(`${this.apiBaseUrl}/products/${productId}`);
   }
   updateProduct(productId: number, updatedProduct: UpdateProductDTO): Observable<UpdateProductDTO> {
@@ -70,6 +71,7 @@ export class ProductService {
     return this.http.post(`${this.apiBaseUrl}/products/uploads/${productId}`, formData);
   }
   deleteProductImage(id: number): Observable<any> {
+    
     return this.http.delete<string>(`${this.apiBaseUrl}/product_images/${id}`);
   }
 

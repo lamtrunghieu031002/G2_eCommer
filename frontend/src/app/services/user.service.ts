@@ -57,6 +57,7 @@ export class UserService {
   
   saveUserResponseToLocalStorage(userResponse?: UserResponse) {
     try {
+      
       if(userResponse == null || !userResponse) {
         return;
       }

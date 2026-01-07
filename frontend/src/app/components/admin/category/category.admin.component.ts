@@ -24,9 +24,11 @@ export class CategoryAdminComponent implements OnInit {
     getCategories(page: number, limit: number) {
       this.categoryService.getCategories(page, limit).subscribe({
         next: (apiresponse: ApiResponse) => {
+          
           this.categories = apiresponse.data;
         },
         complete: () => {
+          
         },
         error: (error: any) => {
           console.error('Error fetching categories:', error);
@@ -34,6 +36,7 @@ export class CategoryAdminComponent implements OnInit {
       });
     }
     insertCategory() {
+      debugger
       // Điều hướng đến trang detail-category với categoryId là tham số
       this.router.navigate(['/admin/categories/insert']);
     } 
@@ -46,14 +49,18 @@ export class CategoryAdminComponent implements OnInit {
       const confirmation = window
       .confirm('Are you sure you want to delete this category?');
       if (confirmation) {
+        debugger
         this.categoryService.deleteCategory(category.id).subscribe({
           next: (response: string) => {
+
             alert('Xóa thành công')
             location.reload();          
           },
           complete: () => {
+                      
           },
           error: (error: any) => {
+            
             alert(error.error)
             console.error('Error fetching categories:', error);
           }

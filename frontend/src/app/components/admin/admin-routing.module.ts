@@ -10,9 +10,6 @@ import { UpdateProductAdminComponent } from "./product/update/update.product.adm
 import { InsertProductAdminComponent } from "./product/insert/insert.product.admin.component";
 import { InsertCategoryAdminComponent } from "./category/insert/insert.category.admin.component";
 import { UpdateCategoryAdminComponent } from "./category/update/update.category.admin.component";
-import { CouponAdminComponent } from "./coupon/coupon.admin.component";
-import { InsertCouponAdminComponent } from "./coupon/insert/insert.coupon.admin.component";
-import { UpdateCouponAdminComponent } from "./coupon/update/update.coupon.admin.component";
 import { UserAdminComponent } from "./user/user.admin.component";
 import { RevenueAdminComponent } from "./revenue/revenue.admin.component";
 
@@ -38,10 +35,6 @@ const routes: Routes = [
                 component: CategoryAdminComponent
             },
             {
-                path: 'coupons',
-                component: CouponAdminComponent
-            },
-            {
                 path: 'revenues/by-product',
                 component: RevenueAdminComponent
             },
@@ -58,7 +51,7 @@ const routes: Routes = [
                 path: 'products/insert',
                 component: InsertProductAdminComponent
             },
-            //categories
+            //categories            
             {
                 path: 'categories/update/:id',
                 component: UpdateCategoryAdminComponent
@@ -66,15 +59,6 @@ const routes: Routes = [
             {
                 path: 'categories/insert',
                 component: InsertCategoryAdminComponent
-            },
-            //coupons
-            {
-                path: 'coupons/update/:id',
-                component: UpdateCouponAdminComponent
-            },
-            {
-                path: 'coupons/insert',
-                component: InsertCouponAdminComponent
             },
         ]
     }

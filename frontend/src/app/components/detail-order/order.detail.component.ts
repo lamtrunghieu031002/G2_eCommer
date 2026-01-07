@@ -47,6 +47,7 @@ export class OrderDetailComponent implements OnInit {
   }
   
   getOrderDetails(): void {
+    
     const orderId = Number(this.route.snapshot.paramMap.get('orderId'));
     this.orderService.getOrderById(orderId).subscribe({
       next: (apiResponse: ApiResponse) => {    
@@ -62,8 +63,10 @@ export class OrderDetailComponent implements OnInit {
         };
       },
       complete: () => {
+        ;        
       },
       error: (error: HttpErrorResponse) => {
+        ;
         console.error(error?.error?.message ?? '');
       } 
     });

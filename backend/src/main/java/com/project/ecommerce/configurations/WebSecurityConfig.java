@@ -29,58 +29,72 @@ import static org.springframework.http.HttpMethod.*;
 @EnableWebMvc
 @RequiredArgsConstructor
 public class WebSecurityConfig {
-    private final JwtTokenFilter jwtTokenFilter;
-    private final JwtAuthEntryPoints entryPoints;
-    @Value("${api.prefix}")
-    private String apiPrefix;
+        private final JwtTokenFilter jwtTokenFilter;
+        private final JwtAuthEntryPoints entryPoints;
+        @Value("${api.prefix}")
+        private String apiPrefix;
 
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http)  throws Exception{
-        http
-                .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class)
-                .exceptionHandling(exception -> exception.authenticationEntryPoint(entryPoints))
-                .sessionManagement(c -> c.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(requests -> requests
-                        .requestMatchers(
-                                String.format("%s/users/register", apiPrefix),
-                                String.format("%s/users/login", apiPrefix),
-                                String.format("%s/healthcheck/**", apiPrefix)
-                        )
-                        .permitAll()
-                        .requestMatchers(GET,
-                                String.format("%s/roles**", apiPrefix)).permitAll()
+        @Bean
+        public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+                http
+                                .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class)
+                                .exceptionHandling(exception -> exception.authenticationEntryPoint(entryPoints))
+                                .sessionManagement(c -> c.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                                .authorizeHttpRequests(requests -> requests
+                                                .requestMatchers(
+                                                                String.format("%s/users/register", apiPrefix),
+                                                                String.format("%s/users/login", apiPrefix),
+                                                                String.format("%s/healthcheck/**", apiPrefix),
+                                                                String.format("%s/chatbot/**", apiPrefix),
+                                                                String.format("%s/test/**", apiPrefix))
+                                                .permitAll()
+                                                .requestMatchers(GET,
+                                                                String.format("%s/roles**", apiPrefix))
+                                                .permitAll()
 
-                        .requestMatchers(GET,
-                                String.format("%s/categories/**", apiPrefix)).permitAll()
+                                                .requestMatchers(GET,
+                                                                String.format("%s/categories/**", apiPrefix))
+                                                .permitAll()
 
-                        .requestMatchers(GET,
-                                String.format("%s/products/**", apiPrefix)).permitAll()
+                                                .requestMatchers(GET,
+                                                                String.format("%s/products/**", apiPrefix))
+                                                .permitAll()
 
-                        .requestMatchers(GET,
-                                String.format("%s/products/images/*", apiPrefix)).permitAll()
+                                                .requestMatchers(GET,
+                                                                String.format("%s/products/images/*", apiPrefix))
+                                                .permitAll()
 
-                        .requestMatchers(GET,
-                                String.format("%s/orders/**", apiPrefix)).permitAll()
-                        .requestMatchers(GET,
-                                String.format("%s/order_details/**", apiPrefix)).permitAll()
+                                                .requestMatchers(GET,
+                                                                String.format("%s/orders/**", apiPrefix))
+                                                .permitAll()
+                                                .requestMatchers(GET,
+                                                                String.format("%s/order_details/**", apiPrefix))
+                                                .permitAll()
 
-                        .requestMatchers(GET,
-                                String.format("%s/reviews/**", apiPrefix)).permitAll()
+                                                .requestMatchers(GET,
+                                                                String.format("%s/reviews/**", apiPrefix))
+                                                .permitAll()
 
-                        .anyRequest()
-                        .authenticated())
-                .csrf(AbstractHttpConfigurer::disable);
-        http.cors(httpSecurityCorsConfigurer -> {
-            CorsConfiguration configuration = new CorsConfiguration();
-            configuration.setAllowedOrigins(List.of("*"));
-            configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
-            configuration.setAllowedHeaders(Arrays.asList("authorization", "content-type", "x-auth-token"));
-            configuration.setExposedHeaders(List.of("x-auth-token"));
-            UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-            source.registerCorsConfiguration("/**", configuration);
-            httpSecurityCorsConfigurer.configurationSource(source);
-        });
+                                                .anyRequest()
+                                                .authenticated())
+                                .csrf(AbstractHttpConfigurer::disable);
+                http.cors(httpSecurityCorsConfigurer -> {
+                        CorsConfiguration configuration = new CorsConfiguration();
+                        configuration.setAllowedOrigins(List.of("*"));
+                        configuration.setAllowedMethods(
+                                        Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
+                        configuration.setAllowedHeaders(Arrays.asList(
+                                "authorization", 
+                                "content-type", 
+                                "x-auth-token",
+                                "x-skip-auth"
+                        ));
+                        configuration.setExposedHeaders(List.of("x-auth-token"));
+                        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+                        source.registerCorsConfiguration("/**", configuration);
+                        httpSecurityCorsConfigurer.configurationSource(source);
+                });
 
-        return http.build();
-    }
+                return http.build();
+        }
 }

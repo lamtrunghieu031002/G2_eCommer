@@ -37,9 +37,11 @@ export class InsertProductAdminComponent implements OnInit {
   getCategories(page: number, limit: number) {
     this.categoryService.getCategories(page, limit).subscribe({
       next: (apiresponse: ApiResponse) => {
+        
         this.categories = apiresponse.data;
       },
       complete: () => {
+        
       },
       error: (error: any) => {
         console.error('Error fetching categories:', error);
@@ -61,11 +63,13 @@ export class InsertProductAdminComponent implements OnInit {
   insertProduct() {    
     this.productService.insertProduct(this.insertProductDTO).subscribe({
       next: (response) => {
+        
         const productId = response.id; // Assuming the response contains the newly created product's ID
         if (this.insertProductDTO.images.length > 0) {
           
           this.productService.uploadImages(productId, this.insertProductDTO.images).subscribe({
             next: (imageResponse) => {
+              
               // Handle the uploaded images response if needed              
               console.log('Images uploaded successfully:', imageResponse);
               // Navigate back to the previous page
@@ -93,6 +97,7 @@ export class InsertProductAdminComponent implements OnInit {
         }
       },
       error: (error) => {
+        
         // Handle error while inserting the product
         alert(error.error)
         console.error('Error inserting product:', error);

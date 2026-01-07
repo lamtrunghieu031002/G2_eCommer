@@ -43,10 +43,12 @@ export class DetailOrderAdminComponent implements OnInit{
   }
   
   getOrderDetails(): void {
+    
     this.orderId = Number(this.route.snapshot.paramMap.get('id'));
     this.orderService.getOrderById(this.orderId).subscribe({
       next: (apiResponse: ApiResponse) => {    
         const response = apiResponse.data;   
+        ;       
         this.orderResponse.id = response.id;
         this.orderResponse.user_id = response.user_id;
         this.orderResponse.fullname = response.fullname;
@@ -82,29 +84,36 @@ export class DetailOrderAdminComponent implements OnInit{
         this.orderResponse.shipping_method = response.shipping_method;        
         this.orderResponse.status = response.status;  
         console.log(this.orderResponse)   
+           
       },
       complete: () => {
+        ;        
       },
       error: (error: any) => {
+        ;
         console.error('Error fetching detail:', error);
       }
     });
   }    
   
   saveOrder(): void {    
+        
     this.orderService
       .updateOrder(this.orderId, new OrderDTO(this.orderResponse))
       .subscribe({
       next: (response: any) => {
+        
         // Handle the successful update
         console.log('Order updated successfully:', response);
         // Navigate back to the previous page
         this.router.navigate(['../'], { relativeTo: this.route });
       },
       complete: () => {
+        ;        
       },
       error: (error: any) => {
         // Handle the error
+        
         console.error('Error updating order:', error);
       }
     });   

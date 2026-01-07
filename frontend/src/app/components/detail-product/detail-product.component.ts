@@ -44,6 +44,7 @@ export class DetailProductComponent implements OnInit {
   ngOnInit() {
     // Lấy productId từ URL      
     const idParam = this.activatedRoute.snapshot.paramMap.get('id');
+    
     //this.cartService.clearCart();
     if (idParam !== null) {
       this.productId = +idParam;
@@ -52,12 +53,14 @@ export class DetailProductComponent implements OnInit {
       this.productService.getDetailProduct(this.productId).subscribe({
         next: (apiresponse: ApiResponse) => {
           // Lấy danh sách ảnh sản phẩm và thay đổi URL
+          
           const response = apiresponse.data;
           if (response.product_images && response.product_images.length > 0) {
             response.product_images.forEach((product_image: ProductImage, index: number) => {
               product_image.image_url = `${environment.apiBaseUrl}/products/images/${product_image.image_url}`;
             });
           }
+          
           this.product = response
           if (this.product && this.product.product_images && this.product.thumbnail) {
             // Tìm index của ảnh có URL chứa thumbnail
@@ -78,8 +81,10 @@ export class DetailProductComponent implements OnInit {
           
         },
         complete: () => {
+          ;
         },
         error: (error: any) => {
+          ;
           console.error('Error fetching detail:', error);
         }
       });
@@ -119,6 +124,7 @@ export class DetailProductComponent implements OnInit {
   }
 
   showImage(index: number): void {
+    
     if (this.product && this.product.product_images &&
       this.product.product_images.length > 0) {
       // Đảm bảo index nằm trong khoảng hợp lệ        
@@ -138,17 +144,21 @@ export class DetailProductComponent implements OnInit {
 
 
   thumbnailClick(index: number) {
+    
     // Gọi khi một thumbnail được bấm
     this.currentImageIndex = index; // Cập nhật currentImageIndex
   }
   nextImage(): void {
+    
     this.showImage(this.currentImageIndex + 1);
   }
 
   previousImage(): void {
+    
     this.showImage(this.currentImageIndex - 1);
   }
   addToCart(): void {
+    
     this.isPressedAddToCart = true;
     if (!this.authGuard.canActivate(null as any, null as any)) {
       return;
@@ -176,6 +186,7 @@ export class DetailProductComponent implements OnInit {
   }
 
   increaseQuantity(): void {
+    
     this.quantity++;
   }
 
@@ -198,6 +209,7 @@ export class DetailProductComponent implements OnInit {
   }
 
   onProductClick(productId: number) {
+    ;
     // Điều hướng đến trang detail-product với productId là tham số
     window.location.href = `/products/${productId}`;
     // this.router.navigate(['/products', productId]);
