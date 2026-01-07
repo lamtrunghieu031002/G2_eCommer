@@ -49,8 +49,8 @@ export class CouponService {
     return this.http.put<Coupon>(`${this.apiBaseUrl}/coupons/${id}`, couponDTO);
   }
 
-  deleteCoupon(id: number): Observable<string> {
-    return this.http.delete<string>(`${this.apiBaseUrl}/coupons/${id}`);
+  deleteCoupon(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiBaseUrl}/coupons/${id}`);
   }
 
   validateCoupon(code: string, orderAmount: number): Observable<CouponValidateResponse> {

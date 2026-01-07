@@ -18,6 +18,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -87,8 +89,8 @@ public class CouponController {
             coupon.setDiscountValue(couponDTO.getDiscountValue());
             coupon.setMinimumOrderAmount(couponDTO.getMinimumOrderAmount());
             coupon.setMaximumDiscount(couponDTO.getMaximumDiscount());
-            coupon.setStartDate(couponDTO.getStartDate());
-            coupon.setEndDate(couponDTO.getEndDate());
+            coupon.setStartDate(couponDTO.getStartDate().toLocalDateTime());
+            coupon.setEndDate(couponDTO.getEndDate().toLocalDateTime());
             coupon.setActive(couponDTO.getActive() != null ? couponDTO.getActive() : true);
             coupon.setUsageLimit(couponDTO.getUsageLimit());
 
@@ -113,8 +115,8 @@ public class CouponController {
             coupon.setDiscountValue(couponDTO.getDiscountValue());
             coupon.setMinimumOrderAmount(couponDTO.getMinimumOrderAmount());
             coupon.setMaximumDiscount(couponDTO.getMaximumDiscount());
-            coupon.setStartDate(couponDTO.getStartDate());
-            coupon.setEndDate(couponDTO.getEndDate());
+            coupon.setStartDate(couponDTO.getStartDate().toLocalDateTime());
+            coupon.setEndDate(couponDTO.getEndDate().toLocalDateTime());
             coupon.setActive(couponDTO.getActive());
             coupon.setUsageLimit(couponDTO.getUsageLimit());
 
@@ -132,7 +134,7 @@ public class CouponController {
     public ResponseEntity<?> deleteCoupon(@PathVariable Long id) {
         try {
             couponService.deleteCoupon(id);
-            return ResponseEntity.ok().body("Coupon deleted successfully");
+            return ResponseEntity.ok().build();
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
