@@ -2,10 +2,15 @@ server:
   port: 8089
 spring:
   datasource:
-    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/postgress}
+    # url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/postgress}
+    # driver-class-name: org.postgresql.Driver
+    # username: ${DBMS_USERNAME:postgres}
+    # password: ${DBMS_PASSWORD:123456}
+    
+    url: ${SPRING_DATASOURCE_URL:}
     driver-class-name: org.postgresql.Driver
     username: ${DBMS_USERNAME:postgres}
-    password: ${DBMS_PASSWORD:123456}
+    password: ${DBMS_PASSWORD:????}
   jpa:
     show-sql: true
     hibernate:
