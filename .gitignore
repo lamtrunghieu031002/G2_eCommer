@@ -1,0 +1,6 @@
+.idea/
+.claude/
+*.log
+**/target/
+**/node_modules/
+**/.env

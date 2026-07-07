@@ -1,0 +1,7 @@
+package com.project.productservice.events;
+
+import java.util.List;
+
+public record OrderCreatedEvent(Long orderId, List<Item> items) {
+    public record Item(Long variantId, int quantity) {}
+}

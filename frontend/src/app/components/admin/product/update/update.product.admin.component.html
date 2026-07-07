@@ -1,0 +1,93 @@
+<div *ngIf="product">
+  <div class="container form-container">
+    <div class="row">
+      <div class="col-md-12">
+        <h3 class="text-center">Chỉnh sửa sản phẩm</h3>
+        <form (ngSubmit)="updateProduct()">
+          <div class="row">
+            <!-- Cột 1: Thông tin chung -->
+            <div class="col-md-7">
+              <div class="form-group">
+                <label for="name">Tên sản phẩm:</label>
+                <input type="text" id="name" [(ngModel)]="updatedProduct.name" name="name" class="form-control"
+                  required>
+              </div>
+
+              <div class="form-group">
+                <label for="price">Giá:</label>
+                <input type="text" id="price" [(ngModel)]="updatedProduct.price" name="price" class="form-control"
+                  required>
+              </div>
+
+              <div class="form-group">
+                <label for="description">Mô tả:</label>
+                <textarea id="description" [(ngModel)]="updatedProduct.description" name="description"
+                  class="form-control" required></textarea>
+              </div>
+
+              <div class="form-group">
+                <label for="category">Phân loại:</label>
+                <select id="category" [(ngModel)]="updatedProduct.category_id" name="category" class="form-control"
+                  required>
+                  <option *ngFor="let category of categories" [value]="category.id">{{ category.name }}</option>
+                </select>
+              </div>
+              <h3>Ảnh sản phẩm</h3>
+              <div class="thumbnail-container">
+                <div *ngFor="let productImage of product?.product_images; let i = index" class="thumbnail-item"
+                [ngClass]="{'active': i === currentImageIndex}"
+                  (click)="thumbnailClick(i)">
+                  <img [src]="productImage.image_url" class="thumbnail-image" alt="Thumbnail Image">
+                  <button type="button" class="btn btn-sm remove-image" (click)="deleteImage(productImage)">
+                    <i class="fa fa-times-circle text-danger"></i>
+                  </button>
+                </div>
+              </div>
+
+              <div class="form-group mt-3">
+                <label for="images">Thêm ảnh (Tối đa 6 ảnh):</label>
+                <input type="file" id="images" name="images" multiple (change)="onFileChange($event)" accept="image/*">
+              </div>
+            </div>
+
+            <!-- Cột 2: Biến thể và hình ảnh -->
+            <div class="col-md-5">
+              <h4>Phân loại hàng</h4>
+              <div class="variant-list">
+                <div *ngFor="let variant of updatedProduct.product_variants; let i = index"
+                  class="variant-item border p-3 mb-2 rounded shadow-sm">
+                  <div class="row align-items-center">
+                    <div class="col-md-6">
+                      <input type="text" [(ngModel)]="variant.variant" name="variant{{i}}" class="form-control"
+                        placeholder="Tên biến thể" required>
+                    </div>
+                    <div class="col-md-3">
+                      <input type="text" [(ngModel)]="variant.stock" name="stock{{i}}" class="form-control"
+                        placeholder="Số lượng" required>
+                    </div>
+                    <div class="col-md-3 text-end">
+                      <button type="button" class="btn btn-danger btn-sm" (click)="removeVariant(variant.id)">
+                        <i class="fa fa-trash"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <button type="button" class="btn btn-success btn-sm mt-2" (click)="addVariant()">
+                <i class="fa fa-plus"></i> Thêm biến thể
+              </button>
+              <button type="button" class="btn btn-warning btn-sm mt-2" (click)="saveVariants()">
+                <i class="fa fa-upload"></i> Lưu biến thể
+              </button>
+
+            </div>
+          </div>
+
+          <div class="text-center mt-4">
+            <button type="submit" class="btn btn-primary">Cập nhật sản phẩm</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

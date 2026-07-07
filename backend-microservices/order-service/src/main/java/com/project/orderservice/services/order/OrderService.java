@@ -5,6 +5,8 @@ import com.project.orderservice.clients.UserClient;
 import com.project.orderservice.dtos.order.CartItemDTO;
 import com.project.orderservice.dtos.order.OrderDTO;
 import com.project.orderservice.dtos.order.OrderWithDetailsDTO;
+import com.project.orderservice.events.OrderCancelledEvent;
+import com.project.orderservice.events.OrderCreatedEvent;
 import com.project.orderservice.exceptions.DataNotFoundException;
 import com.project.orderservice.models.*;
 import com.project.orderservice.repositories.*;
@@ -13,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,6 +29,7 @@ public class OrderService implements IOrderService {
     private final ProductClient productClient;
     private final OrderRepository orderRepository;
     private final OrderDetailRepository orderDetailRepository;
+    private final KafkaTemplate<String, Object> kafkaTemplate;
 
     private final ModelMapper modelMapper;
 
@@ -86,6 +90,13 @@ public class OrderService implements IOrderService {
 
         order.setOrderDetails(orderDetails);
         orderDetailRepository.saveAll(orderDetails);
+        // phat event de product-service tru ton kho (bat dong bo)
+        List<OrderCreatedEvent.Item>items=orderDetails.stream()
+                .map(od->new OrderCreatedEvent.Item(od.getVariantId(),
+                        od.getNumberOfProducts()
+                        )).toList();
+        kafkaTemplate.send("order-created", String.valueOf(order.getId()),
+                new OrderCreatedEvent(order.getId(), items));
         return order;
     }
 
@@ -99,6 +110,7 @@ public class OrderService implements IOrderService {
 
         List<OrderDetail> savedOrderDetails = orderDetailRepository.saveAll(order.getOrderDetails());
         savedOrder.setOrderDetails(savedOrderDetails);
+
         return savedOrder;
     }
 
@@ -124,6 +136,7 @@ public class OrderService implements IOrderService {
                 .addMappings(mapper -> mapper.skip(Order::setId));
         modelMapper.map(orderDTO, order);
         order.setUserId(orderDTO.getUserId());
+
         return orderRepository.save(order);
     }
 
@@ -175,6 +188,22 @@ public class OrderService implements IOrderService {
         }
 
         order.setStatus(status);
-        return orderRepository.save(order);
+        Order saved=orderRepository.save(order);
+        // don bi huy -> phat event de product-service hoan lai ton kho
+        if(OrderStatus.CANCELLED.equals(status)){
+            List<OrderDetail>details=
+                    orderDetailRepository.findByOrderId(saved.getId());
+            List<OrderCancelledEvent.Item> items=details.stream()
+                    .map(od->new OrderCancelledEvent.Item(od.getVariantId(),
+                            od.getNumberOfProducts()))
+                    .toList();
+            kafkaTemplate.send("order-cancelled",String.valueOf(saved.getId()),
+                    new OrderCancelledEvent(saved.getId(),items));
+        }
+
+        return saved;
+//        order.setStatus(status);
+//        return orderRepository.save(order);
     }
+//    List<OrderCreatedEvent.Item>items=orderDetailRepository
 }

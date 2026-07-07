@@ -1,0 +1,72 @@
+<header>
+  <nav class="navbar navbar-expand-lg navbar-light ">
+      <div class="container d-flex justify-content-between align-items-center">
+          <!-- Logo và Trang chủ -->
+          <div class="d-flex align-items-center justify-content-between ">
+              <a class="navbar-brand d-flex align-items-center" routerLink="">
+                  <img src="/favicon.ico" alt="Logo" width="50" height="50">
+                  <span class="ms-2 fw-bold brand" >Tengen Shop</span>
+              </a>
+              
+              <button class="btn" 
+                routerLinkActive="active"
+                routerLink="/"
+                [routerLinkActiveOptions]="{ exact: true }"
+                style="color: white;">Trang chủ
+              </button>
+                            
+          </div>
+
+          <!-- Ô tìm kiếm ở giữa -->
+          <div class="search-box d-flex align-items-center">
+              <input type="text" class="form-control search-input me-2" 
+                     placeholder="Tìm sản phẩm" 
+                     [(ngModel)]="keyword">
+              <select class="form-control product-category me-2" [(ngModel)]="selectedCategoryId">
+                  <option [value]="0">Tất cả</option> 
+                  <option *ngFor="let category of categories" [value]="category.id">
+                      {{ category.name }}
+                  </option>
+              </select>
+              <button class="btn " (click)="searchProducts()" routerLink=""><i class="fa fa-search"></i> Tìm kiếm</button>
+          </div>
+
+          <!-- Giỏ hàng & Thông tin cá nhân bên phải -->
+          <div class="d-flex align-items-center">
+            <button class="btn"                
+                 routerLinkActive="active"
+                 routerLink="/orders"
+                 [routerLinkActiveOptions]="{ exact: true }"
+                 style="color: white;">
+                  <i class="fas fa-shopping-cart icon"></i> Giỏ hàng
+            </button>
+            </div>
+            <button class="btn" routerLinkActive="active">
+
+              <ng-container *ngIf="userResponse" >
+                  <ng-container ngbPopover="Thông tin cá nhân,Đơn mua,Đăng xuất"
+                                popoverTitle="User Actions"
+                                triggers="click"
+                                [placement]="'bottom'">
+                      <a class="nav-link text-white"                           
+                         [ngbPopover]="popoverContent"
+                         (click)="togglePopover($event)">
+                         <i class="fa-solid fa-user"></i> {{ userResponse.fullname }}
+                      </a>
+                      <ng-template #popoverContent>
+                          <div class="popover-list">
+                              <a class="popover-item" (click)="handleItemClick(0)">Thông tin cá nhân</a>
+                              <a class="popover-item" (click)="handleItemClick(1)">Đơn mua</a>
+                              <a class="popover-item" (click)="handleItemClick(2)" routerLink="">Đăng xuất</a>
+                          </div>
+                      </ng-template>
+                  </ng-container>
+              </ng-container>
+              
+              <ng-container *ngIf="!userResponse">
+                  <a class="nav-link text-white" routerLink="/login">Đăng nhập</a>
+              </ng-container>
+            </button>
+      </div>
+  </nav>
+</header>

@@ -1,0 +1,79 @@
+<app-header></app-header>
+<div class="order-filter">
+  <button 
+    class="filter-btn" 
+    [ngClass]="{ 'active': selectedStatus === '' }" 
+    (click)="filterOrders('')">Tất cả
+  </button>
+  <button 
+    class="filter-btn" 
+    [ngClass]="{ 'active': selectedStatus === 'pending' }" 
+    (click)="filterOrders('pending')">Chờ duyệt
+  </button>
+  <button 
+    class="filter-btn"  
+    [ngClass]="{ 'active': selectedStatus === 'processing' }" 
+    (click)="filterOrders('processing')">Chờ lấy hàng
+  </button>
+  <button 
+    class="filter-btn"  
+    [ngClass]="{ 'active': selectedStatus === 'shipping' }" 
+    (click)="filterOrders('shipping')">Vận chuyển
+  </button>
+  <button 
+    class="filter-btn"  
+    [ngClass]="{ 'active': selectedStatus === 'delivered' }" 
+    (click)="filterOrders('delivered')">Hoàn thành
+  </button>
+  <button class="filter-btn"
+    [ngClass]="{ 'active': selectedStatus === 'cancelled' }" 
+    (click)="filterOrders('cancelled')">Đã huỷ
+  </button>
+  <button 
+    class="filter-btn"  
+    [ngClass]="{ 'active': selectedStatus === 'returned' }" 
+    (click)="filterOrders('returned')">Hoàn hàng
+  </button>
+</div>
+<div class="search-box d-flex align-items-center">
+  <input type="text" class="form-control search-input me-2" 
+         placeholder="Tìm đơn hàng" 
+         [(ngModel)]="keyword">
+  <button class="search-btn" (click)="searchOrders()"><i class="fa fa-search"></i> Tìm kiếm</button>
+</div>
+ <div class="orders-container">
+    <div *ngIf="orderResponses.length === 0" class="no-orders">
+      <p>Chưa có đơn hàng nào.</p>
+    </div>
+  
+    <div *ngFor="let order of orderResponses" class="order-card" (click)=selectOrder(order.id)>
+      <div class="order-header">
+        <p><strong>Ngày đặt:</strong> {{ order.order_date | date:'dd/MM/yyyy' }}</p>
+        <span class="order-status">{{ getStatusLabel(order.status) }}</span>
+      </div>
+      <div class="order-items">
+        <div *ngFor="let item of order.order_details" class="order-item">
+          <img [src]="item.thumbnail" alt="Sản phẩm" class="order-img"/>
+          
+          <div class="order-info">
+            <p class="order-name" style="font-size: 16px;">{{ item.product_name }}</p>
+            <p>{{ item.variant_name }}</p>
+            <p>x {{ item.number_of_products }}</p>
+          </div>
+  
+          <div class="order-price">
+            <p>Thành tiền</p>
+            <span class="price">{{ item.price | currency:'VND' }}</span>
+          </div>
+        </div>
+      </div>
+      <div class="order-summary">
+        <!-- <span class="order-status">Trạng thái: {{ getStatusLabel(order.status) }}</span> -->
+        <button *ngIf="order.status === 'pending' || order.status === 'processing'" class="return-btn" (click)=selectOrder(order.id)>Huỷ đặt hàng</button>
+        <button *ngIf="order.status === 'delivered'" class="return-btn" (click)=selectOrder(order.id)>Yêu cầu hoàn hàng</button>
+        <span class="order-total"><strong>Tổng tiền:</strong> {{ order.total_money | currency:'VND' }}</span>
+      </div>
+      
+    </div>
+</div>
+

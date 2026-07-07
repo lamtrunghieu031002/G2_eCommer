@@ -16,6 +16,15 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
+  kafka:
+    bootstrap-servers: ${KAFKA_URL:localhost:9092}
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      properties:
+        spring.json.type.mapping: >-
+          orderCreated:com.project.orderservice.events.OrderCreatedEvent,
+          orderCancelled:com.project.orderservice.events.OrderCancelledEvent
 
 api:
   prefix: /api/v1

@@ -1,0 +1,7 @@
+.container {
+    background-color: white;
+    padding-left: 0 !important; /* Remove left padding */
+    padding-right: 0 !important; /* Remove right padding */
+    height: calc(100vh - 80px);
+    overflow-y: auto; /* Add scrollbars if content overflows */
+}

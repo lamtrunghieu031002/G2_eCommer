@@ -1,0 +1,74 @@
+<div class="container">
+    <div class="row">
+      <div class="col-md-12 ">
+        <h3 class="text-center">Thêm sản phẩm mới</h3>
+        <form (ngSubmit)="insertProduct()" enctype="multipart/form-data">
+          <div class="row">
+            <div class="col-md-7">
+              <div class="form-group">
+                <label for="name">Name:</label>
+                <input type="text" id="name" [(ngModel)]="insertProductDTO.name" name="name" class="form-control" required>
+              </div>
+      
+              <div class="form-group mb-3">
+                <label for="price">Price:</label>
+                <input type="text" id="price" [(ngModel)]="insertProductDTO.price" name="price" class="form-control col-md-3" required>
+              </div>
+      
+              <div class="form-group mb-3">
+                <label for="description">Description:</label>
+                <textarea id="description" [(ngModel)]="insertProductDTO.description" name="description" class="form-control" required></textarea>
+              </div>
+      
+              <div class="form-group mb-3">
+                <label for="category">Category:</label>
+                <select id="category" [(ngModel)]="insertProductDTO.category_id" name="category" class="form-control" required>
+                  <!-- Display list of categories -->
+                  <option *ngFor="let category of categories" [value]="category.id">{{ category.name }}</option>
+                </select>
+              </div>
+      
+              <div class="form-group mb-3">
+                <label for="images">Images (up to 5):</label>
+                <input type="file" id="images" name="images" multiple (change)="onFileChange($event)" accept="image/*">
+              </div>
+            </div>
+
+            <!-- Cột 2: Biến thể và hình ảnh -->
+            <div class="col-md-5">
+              <h4>Phân loại hàng</h4>
+              <div class="variant-list">
+                <div *ngFor="let variant of insertProductDTO.variants; let i = index"
+                  class="variant-item border p-3 mb-2 rounded shadow-sm">
+                  <div class="row align-items-center">
+                    <div class="col-md-6">
+                      <input type="text" [(ngModel)]="variant.variant" name="variant{{i}}" class="form-control"
+                        placeholder="Tên biến thể" required>
+                    </div>
+                    <div class="col-md-3">
+                      <input type="text" [(ngModel)]="variant.stock" name="stock{{i}}" class="form-control"
+                        placeholder="Số lượng" required>
+                    </div>
+                    <div class="col-md-3 text-end">
+                      <button type="button" class="btn btn-danger btn-sm" >
+                        <i class="fa fa-trash"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <button type="button" class="btn btn-success btn-sm mt-2" (click)="addVariant()">
+                <i class="fa fa-plus"></i> Thêm biến thể
+              </button>
+              <!-- <button type="button" class="btn btn-warning btn-sm mt-2" >
+                <i class="fa fa-upload"></i> Lưu biến thể
+              </button> -->
+
+            </div>
+          </div>
+  
+          <button type="submit" class="btn btn-primary">Insert</button>
+        </form>
+      </div>
+    </div>
+  </div>
