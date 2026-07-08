@@ -15,6 +15,6 @@ foreach ($p in $ports) {
 }
 
 # Tat PostgreSQL (giu nguyen du lieu trong volume)
-docker compose -f "$PSScriptRoot\docker-compose.yml" stop postgres | Out-Null
+docker compose -f "$PSScriptRoot\docker-compose.yml" stop | Out-Null   # postgres + redis + kafka + kafka-ui
 Write-Host "  Da dung PostgreSQL (du lieu van con)" -ForegroundColor Green
 Write-Host "`nDa tat xong. Chay lai bang .\start-all.ps1" -ForegroundColor Cyan

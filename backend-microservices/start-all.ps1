@@ -10,7 +10,7 @@ Write-Host "==== KHOI DONG HE THONG E-COMMERCE ====" -ForegroundColor Cyan
 
 # --- 1. Ha tang: PostgreSQL trong Docker ---
 Write-Host "`n[1/4] Khoi dong PostgreSQL (Docker)..." -ForegroundColor Yellow
-docker compose -f "$root\docker-compose.yml" up -d postgres | Out-Null
+docker compose -f "$root\docker-compose.yml" up -d | Out-Null   # postgres + redis + kafka + kafka-ui
 
 Write-Host "      Cho database san sang..." -NoNewline
 for ($i = 0; $i -lt 30; $i++) {

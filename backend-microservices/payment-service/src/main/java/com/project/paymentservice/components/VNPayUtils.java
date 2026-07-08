@@ -76,6 +76,17 @@ public class VNPayUtils {
     }
     public String getIpAddress(HttpServletRequest request) {
         String ipAddress = request.getHeader("X-FORWARDED-FOR");
-        return (ipAddress != null && !ipAddress.isEmpty()) ? ipAddress : request.getRemoteAddr();
+        if (ipAddress != null && !ipAddress.isEmpty()) {
+            // X-FORWARDED-FOR co the co nhieu IP -> lay cai dau tien
+            ipAddress = ipAddress.split(",")[0].trim();
+        } else {
+            ipAddress = request.getRemoteAddr();
+        }
+        // VNPay khong chap nhan IPv6 (vd ::1 khi chay localhost) -> ep ve IPv4
+        if (ipAddress == null || ipAddress.isEmpty()
+                || ipAddress.contains(":") || "0:0:0:0:0:0:0:1".equals(ipAddress)) {
+            ipAddress = "127.0.0.1";
+        }
+        return ipAddress;
     }
 }

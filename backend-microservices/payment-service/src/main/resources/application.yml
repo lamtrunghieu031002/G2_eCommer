@@ -15,6 +15,6 @@ jwt:
 vnpay:
   pay-url: "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html"
   return-url: "${VNPAY_RETURN_URI:http://localhost:4200/payments/payment-callback}"
-  tmn-code: "${VNPAY_TMN_CODE:1AFGVYUH}"
+  tmn-code: "${VNPAY_TMN_CODE:QSEGF97H}"
   secret-key: "${VNPAY_HASH_SECRET:}"
   api-url: "https://sandbox.vnpayment.vn/merchant_webapi/api/transaction"
