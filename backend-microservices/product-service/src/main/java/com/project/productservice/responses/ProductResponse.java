@@ -36,8 +36,10 @@ public class ProductResponse extends BaseResponse{
                 .thumbnail(product.getThumbnail())
                 .description(product.getDescription())
                 .categoryId(product.getCategory().getId())
-                .productImages(product.getProductImages())
-                .variants(product.getProductVariants())
+                // Copy sang HashSet thuong -> ep load lazy ngay khi con session,
+                // tranh loi "no Session" khi Redis serialize object de cache
+                .productImages(new HashSet<>(product.getProductImages()))
+                .variants(new HashSet<>(product.getProductVariants()))
                 .build();
         productResponse.setCreatedAt(product.getCreatedAt());
         productResponse.setUpdatedAt(product.getUpdatedAt());
