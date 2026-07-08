@@ -12,8 +12,11 @@ import com.project.productservice.repositories.ProductImageRepository;
 import com.project.productservice.repositories.ProductRepository;
 import com.project.productservice.repositories.VariantRepository;
 import com.project.productservice.responses.ProductResponse;
+import com.project.productservice.responses.ProductListResponse;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -37,6 +40,7 @@ public class ProductService implements IProductService{
 
     @Override
     @Transactional
+    @CacheEvict(value = "products", allEntries = true) // xoa cache khi them SP moi
     public Product createProduct(ProductDTO productDTO) {
         Category existingCategory = categoryRepository
                 .findById(productDTO.getCategoryId())
@@ -82,8 +86,23 @@ public class ProductService implements IProductService{
         productsPage = productRepository.searchProducts(categoryId, keyword, pageRequest);
         return productsPage.map(ProductResponse::fromProduct);
     }
+
+    // Ban cache: lan dau query DB roi luu Redis (TTL 10 phut); cac lan sau lay tu Redis.
+    // Cache DTO (ProductListResponse) thay vi Page vi Page kho serialize.
+    @Override
+    @Cacheable(value = "products",
+            key = "#keyword + '-' + #categoryId + '-' + #page + '-' + #limit")
+    public ProductListResponse getProductsCached(String keyword, Long categoryId, int page, int limit) {
+        Page<ProductResponse> p = getAllProducts(keyword, categoryId, PageRequest.of(page, limit));
+        return ProductListResponse.builder()
+                .products(p.getContent())
+                .totalPages(p.getTotalPages())
+                .build();
+    }
+
     @Override
     @Transactional
+    @CacheEvict(value = "products", allEntries = true) // xoa cache khi sua SP
     public Product updateProduct(
             long id,
             ProductDTO productDTO
@@ -120,6 +139,7 @@ public class ProductService implements IProductService{
 
     @Override
     @Transactional
+    @CacheEvict(value = "products", allEntries = true) // xoa cache khi xoa SP
     public void deleteProduct(long id) {
         Optional<Product> optionalProduct = productRepository.findById(id);
         optionalProduct.ifPresent(productRepository::delete);

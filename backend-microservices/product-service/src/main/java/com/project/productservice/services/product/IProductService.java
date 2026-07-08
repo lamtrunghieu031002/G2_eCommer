@@ -5,6 +5,7 @@ import com.project.productservice.dtos.product.ProductImageDTO;
 import com.project.productservice.models.Product;
 import com.project.productservice.models.ProductImage;
 import com.project.productservice.responses.ProductResponse;
+import com.project.productservice.responses.ProductListResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
@@ -15,6 +16,7 @@ public interface IProductService {
     Product getProductById(long id);
     Page<ProductResponse> getAllProducts(String keyword,
                                                 Long categoryId, PageRequest pageRequest);
+    ProductListResponse getProductsCached(String keyword, Long categoryId, int page, int limit);
     Product updateProduct(long id, ProductDTO productDTO) ;
     void deleteProduct(long id);
     boolean existsByName(String name);

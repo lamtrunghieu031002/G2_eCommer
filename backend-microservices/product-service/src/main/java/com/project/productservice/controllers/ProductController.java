@@ -175,22 +175,9 @@ public class ProductController {
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "12") int limit
     ) {
-        int totalPages = 0;
-        // Tạo Pageable từ thông tin trang và giới hạn
-        PageRequest pageRequest = PageRequest.of(
-                page, limit
-                //Sort.by("createdAt").descending()
-
-        );
-        Page<ProductResponse> productResponses =  productService
-                .getAllProducts(keyword, categoryId, pageRequest);
-
-        totalPages = productResponses.getTotalPages();
-        ProductListResponse productListResponse = ProductListResponse
-                .builder()
-                .products(productResponses.stream().toList())
-                .totalPages(totalPages)
-                .build();
+        // Goi method co @Cacheable -> lan dau vao DB, cac lan sau lay tu Redis
+        ProductListResponse productListResponse =
+                productService.getProductsCached(keyword, categoryId, page, limit);
 
         return ResponseEntity.ok(ResponseObject.builder()
                 .message("Get products successfully")
